@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ôn tập Hệ thức lượng trong tam giác - Toán 10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Cambria+Math&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#6366f1;
+    --primary-dark:#4f46e5;
+    --secondary:#06b6d4;
+    --accent:#f59e0b;
+    --success:#10b981;
+    --danger:#ef4444;
+    --warning:#f97316;
+    --bg-1:#eef2ff;
+    --bg-2:#f0f9ff;
+    --card:#ffffff;
+    --text:#1e293b;
+    --text-muted:#64748b;
+    --border:#e2e8f0;
+    --shadow-sm:0 1px 3px rgba(0,0,0,.06);
+    --shadow-md:0 4px 14px rgba(15,23,42,.08);
+    --shadow-lg:0 12px 32px rgba(15,23,42,.12);
+    --radius:16px;
+    --radius-sm:10px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+
+  html,body{height:100%}
+
+  body{
+    font-family:'Be Vietnam Pro',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    color:var(--text);
+    background:linear-gradient(135deg,#eef2ff 0%,#f0f9ff 50%,#ecfeff 100%);
+    background-attachment:fixed;
+    line-height:1.6;
+    min-height:100vh;
+    font-size:15px;
+  }
+
+  /* ============ MATH STYLING ============ */
+  .m{font-family:'Cambria Math','Times New Roman',Cambria,serif;font-style:italic;font-size:1.05em}
+  .formula{
+    display:block;
+    background:linear-gradient(135deg,#f8fafc,#eef2ff);
+    border-left:4px solid var(--primary);
+    padding:14px 18px;
+    border-radius:var(--radius-sm);
+    font-family:'Cambria Math','Times New Roman',serif;
+    font-size:1.05rem;
+    line-height:2;
+    margin:10px 0;
+    overflow-x:auto;
+    color:#1e293b;
+  }
+  .formula b{color:var(--primary-dark);font-weight:700}
+  .formula.center{text-align:center}
+  .frac{display:inline-block;vertical-align:middle;text-align:center;margin:0 2px}
+  .frac .num{display:block;border-bottom:1.5px solid currentColor;padding:0 4px}
+  .frac .den{display:block;padding:0 4px}
+  sup,sub{font-size:.72em}
+
+  /* ============ LOGIN SCREEN ============ */
+  #login-screen{
+    position:fixed;inset:0;z-index:100;
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+    background:linear-gradient(135deg,#4f46e5 0%,#6366f1 40%,#06b6d4 100%);
+    overflow-y:auto;
+  }
+  #login-screen::before{
+    content:'';position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 15% 20%,rgba(255,255,255,.18) 0,transparent 40%),
+      radial-gradient(circle at 85% 80%,rgba(255,255,255,.12) 0,transparent 40%);
+    pointer-events:none;
+  }
+  .login-box{
+    position:relative;width:100%;max-width:460px;
+    background:rgba(255,255,255,.98);
+    border-radius:24px;
+    padding:36px 28px 28px;
+    box-shadow:0 25px 60px rgba(0,0,0,.3);
+    animation:slideUp .6s cubic-bezier(.16,1,.3,1);
+  }
+  @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  .login-logo{
+    width:76px;height:76px;margin:0 auto 18px;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    border-radius:22px;display:flex;align-items:center;justify-content:center;
+    font-size:38px;color:#fff;
+    box-shadow:0 12px 28px rgba(99,102,241,.4);
+    transform:rotate(-6deg);
+  }
+  .login-box h1{
+    font-size:1.5rem;font-weight:800;text-align:center;
+    background:linear-gradient(135deg,var(--primary-dark),var(--secondary));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-bottom:6px;line-height:1.3;
+  }
+  .login-box .subtitle{
+    text-align:center;color:var(--text-muted);font-size:.92rem;margin-bottom:24px;
+  }
+  .teacher-card{
+    background:linear-gradient(135deg,#fef3c7,#fde68a);
+    border:1.5px dashed #f59e0b;
+    border-radius:14px;
+    padding:12px 14px;
+    margin-bottom:22px;
+    text-align:center;
+    font-size:.88rem;
+    color:#92400e;
+    font-weight:600;
+    line-height:1.55;
+  }
+  .teacher-card .name{font-weight:800;font-size:.98rem;color:#78350f}
+  .teacher-card .phone{font-weight:700;color:#b45309;letter-spacing:.3px}
+
+  .field{margin-bottom:16px}
+  .field label{
+    display:block;font-weight:600;font-size:.86rem;
+    color:#475569;margin-bottom:7px;
+  }
+  .field input{
+    width:100%;padding:13px 16px;
+    border:2px solid var(--border);border-radius:12px;
+    font-size:1rem;font-family:inherit;
+    transition:all .2s;background:#f8fafc;
+  }
+  .field input:focus{
+    outline:none;border-color:var(--primary);
+    background:#fff;box-shadow:0 0 0 4px rgba(99,102,241,.12);
+  }
+  .btn-primary{
+    width:100%;padding:14px;
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;border:none;border-radius:12px;
+    font-size:1.02rem;font-weight:700;font-family:inherit;
+    cursor:pointer;transition:all .25s;
+    box-shadow:0 8px 20px rgba(99,102,241,.35);
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(99,102,241,.45)}
+  .btn-primary:active{transform:translateY(0)}
+  .btn-primary:disabled{opacity:.55;cursor:not-allowed;transform:none}
+  .login-note{
+    text-align:center;font-size:.78rem;color:var(--text-muted);margin-top:16px;
+  }
+
+  /* ============ APP LAYOUT ============ */
+  #app{display:none;min-height:100vh;flex-direction:column;padding-bottom:90px}
+  #app.active{display:flex}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(135deg,#4f46e5,#6366f1 55%,#06b6d4);
+    color:#fff;
+    padding:12px 16px;
+    box-shadow:0 4px 18px rgba(79,70,229,.25);
+  }
+  .topbar-inner{
+    max-width:920px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .teacher-mini{
+    display:flex;align-items:center;gap:9px;
+    font-size:.76rem;line-height:1.35;
+    background:rgba(255,255,255,.15);
+    padding:7px 11px;border-radius:11px;
+    border:1px solid rgba(255,255,255,.25);
+    backdrop-filter:blur(6px);
+    max-width:100%;
+  }
+  .teacher-mini .icon{font-size:1.05rem;flex-shrink:0}
+  .teacher-mini b{font-weight:700;font-size:.8rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .teacher-mini span{opacity:.9;font-size:.7rem;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .user-badge{
+    display:flex;align-items:center;gap:7px;
+    font-size:.8rem;font-weight:600;
+    background:rgba(255,255,255,.18);
+    padding:7px 12px;border-radius:30px;
+    border:1px solid rgba(255,255,255,.25);
+    flex-shrink:0;
+  }
+  .user-badge .avatar{
+    width:24px;height:24px;border-radius:50%;
+    background:linear-gradient(135deg,#fbbf24,#f59e0b);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.72rem;font-weight:800;color:#fff;
+  }
+
+  .container{max-width:920px;margin:0 auto;width:100%;padding:20px 16px}
+
+  /* ============ TABS ============ */
+  .tabs{
+    position:fixed;bottom:0;left:0;right:0;z-index:60;
+    background:rgba(255,255,255,.96);
+    backdrop-filter:blur(12px);
+    border-top:1px solid var(--border);
+    box-shadow:0 -4px 20px rgba(15,23,42,.07);
+    padding:8px max(8px,calc((100vw - 920px)/2 + 8px)) 12px;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:4px;
+  }
+  .tab-btn{
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:8px 4px;border:none;background:transparent;
+    font-family:inherit;font-size:.7rem;font-weight:600;
+    color:var(--text-muted);cursor:pointer;
+    border-radius:11px;transition:all .2s;
+  }
+  .tab-btn .emoji{font-size:1.35rem;transition:transform .25s}
+  .tab-btn.active{color:var(--primary);background:rgba(99,102,241,.1)}
+  .tab-btn.active .emoji{transform:scale(1.18)}
+
+  .tab-content{display:none;animation:fadeIn .35s ease}
+  .tab-content.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ============ CARDS ============ */
+  .card{
+    background:var(--card);border-radius:var(--radius);
+    box-shadow:var(--shadow-md);
+    padding:20px 18px;margin-bottom:16px;
+    border:1px solid rgba(226,232,240,.7);
+  }
+  .card-title{
+    display:flex;align-items:center;gap:10px;
+    font-size:1.12rem;font-weight:800;
+    color:var(--text);margin-bottom:14px;
+    padding-bottom:12px;border-bottom:2px solid #f1f5f9;
+  }
+  .card-title .badge{
+    width:34px;height:34px;border-radius:10px;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:1.05rem;flex-shrink:0;
+  }
+
+  .section-title{
+    display:flex;align-items:center;gap:8px;
+    font-size:1rem;font-weight:700;
+    color:var(--primary-dark);
+    margin:18px 0 10px;
+  }
+  .section-title .num{
+    width:26px;height:26px;border-radius:8px;
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;font-size:.82rem;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+
+  .note-box{
+    background:linear-gradient(135deg,#fef3c7,#fffbeb);
+    border-left:4px solid var(--accent);
+    border-radius:10px;
+    padding:12px 14px;margin:12px 0;
+    font-size:.9rem;color:#78350f;
+  }
+  .note-box b{color:#b45309}
+
+  .example-box{
+    background:linear-gradient(135deg,#ecfeff,#f0fdfa);
+    border:1.5px solid #a5f3fc;
+    border-radius:12px;
+    padding:14px 16px;margin:12px 0;
+  }
+  .example-box .ex-label{
+    display:inline-flex;align-items:center;gap:6px;
+    background:linear-gradient(135deg,#06b6d4,#0891b2);
+    color:#fff;font-size:.75rem;font-weight:800;
+    padding:4px 11px;border-radius:20px;
+    margin-bottom:9px;letter-spacing:.3px;
+  }
+  .example-box .ex-body{font-size:.92rem;color:#0f172a;line-height:1.75}
+
+  .accordion{
+    border:1.5px solid var(--border);
+    border-radius:14px;overflow:hidden;
+    margin-bottom:12px;background:#fff;
+    transition:box-shadow .25s;
+  }
+  .accordion:hover{box-shadow:var(--shadow-sm)}
+  .accordion-header{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:14px 16px;cursor:pointer;
+    background:linear-gradient(135deg,#f8fafc,#f1f5f9);
+    font-weight:700;font-size:.95rem;
+    user-select:none;transition:background .2s;
+  }
+  .accordion-header:hover{background:linear-gradient(135deg,#eef2ff,#e0e7ff)}
+  .accordion-header .left{display:flex;align-items:center;gap:10px}
+  .accordion-header .chip{
+    width:30px;height:30px;border-radius:9px;
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;font-size:.85rem;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .accordion-header .arrow{
+    transition:transform .3s;font-size:.9rem;color:var(--text-muted);
+  }
+  .accordion.open .arrow{transform:rotate(180deg)}
+  .accordion-body{
+    max-height:0;overflow:hidden;
+    transition:max-height .45s cubic-bezier(.16,1,.3,1);
+    padding:0 16px;
+  }
+  .accordion.open .accordion-body{
+    max-height:3000px;padding:14px 16px 18px;
+    border-top:1px solid var(--border);
+  }
+
+  /* ============ QUIZ ============ */
+  .quiz-header{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    margin-bottom:14px;flex-wrap:wrap;
+  }
+  .progress-info{
+    font-size:.82rem;color:var(--text-muted);font-weight:600;
+  }
+  .progress-bar{
+    width:100%;height:8px;background:#e2e8f0;
+    border-radius:8px;overflow:hidden;margin-top:8px;
+  }
+  .progress-fill{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,var(--primary),var(--secondary));
+    border-radius:8px;transition:width .45s cubic-bezier(.16,1,.3,1);
+  }
+
+  .question-box{
+    background:linear-gradient(135deg,#f8fafc,#eef2ff);
+    border:1.5px solid #c7d2fe;
+    border-radius:14px;
+    padding:16px;margin-bottom:14px;
+  }
+  .q-tag{
+    display:inline-block;
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;font-size:.7rem;font-weight:800;
+    padding:3px 10px;border-radius:20px;
+    margin-bottom:8px;letter-spacing:.4px;
+  }
+  .q-text{font-size:.98rem;font-weight:600;line-height:1.65;margin-bottom:12px;color:#0f172a}
+  .q-text .m{font-weight:500}
+
+  .options{display:flex;flex-direction:column;gap:9px}
+  .option{
+    display:flex;align-items:center;gap:11px;
+    padding:12px 14px;
+    background:#fff;
+    border:2px solid var(--border);
+    border-radius:12px;
+    cursor:pointer;transition:all .18s;
+    font-family:inherit;font-size:.93rem;
+    text-align:left;color:var(--text);
+    width:100%;
+  }
+  .option:hover:not(.disabled){
+    border-color:var(--primary);
+    background:#f5f3ff;
+    transform:translateX(3px);
+  }
+  .option .letter{
+    width:28px;height:28px;border-radius:50%;
+    background:#f1f5f9;color:var(--text-muted);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:.82rem;flex-shrink:0;
+    transition:all .18s;
+  }
+  .option.correct{
+    border-color:var(--success);
+    background:linear-gradient(135deg,#ecfdf5,#d1fae5);
+  }
+  .option.correct .letter{background:var(--success);color:#fff}
+  .option.wrong{
+    border-color:var(--danger);
+    background:linear-gradient(135deg,#fef2f2,#fee2e2);
+  }
+  .option.wrong .letter{background:var(--danger);color:#fff}
+  .option.disabled{cursor:default}
+  .option .mark{margin-left:auto;font-size:1.1rem;font-weight:800}
+
+  .feedback{
+    margin-top:12px;padding:11px 14px;
+    border-radius:11px;font-size:.9rem;
+    font-weight:600;display:none;line-height:1.6;
+  }
+  .feedback.show{display:block;animation:fadeIn .3s}
+  .feedback.ok{background:linear-gradient(135deg,#ecfdf5,#d1fae5);color:#065f46;border-left:4px solid var(--success)}
+  .feedback.no{background:linear-gradient(135deg,#fef2f2,#fee2e2);color:#991b1b;border-left:4px solid var(--danger)}
+
+  .btn-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .btn{
+    flex:1;min-width:130px;
+    padding:12px 18px;border-radius:12px;
+    font-family:inherit;font-size:.92rem;font-weight:700;
+    cursor:pointer;transition:all .2s;
+    display:flex;align-items:center;justify-content:center;gap:7px;
+    border:none;
+  }
+  .btn-next{
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;box-shadow:0 6px 16px rgba(99,102,241,.3);
+  }
+  .btn-next:hover{transform:translateY(-2px);box-shadow:0 9px 22px rgba(99,102,241,.4)}
+  .btn-next:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+  .btn-ghost{
+    background:#f1f5f9;color:var(--text);
+    border:1.5px solid var(--border);
+  }
+  .btn-ghost:hover{background:#e2e8f0}
+  .btn-success{
+    background:linear-gradient(135deg,var(--success),#059669);
+    color:#fff;box-shadow:0 6px 16px rgba(16,185,129,.3);
+  }
+  .btn-success:hover{transform:translateY(-2px)}
+
+  /* ============ RESULT ============ */
+  .result-hero{
+    text-align:center;padding:26px 20px;
+    background:linear-gradient(135deg,#4f46e5,#6366f1 50%,#06b6d4);
+    color:#fff;border-radius:var(--radius);
+    box-shadow:var(--shadow-lg);
+    margin-bottom:16px;position:relative;overflow:hidden;
+  }
+  .result-hero::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.2),transparent 50%);
+  }
+  .result-hero .score-ring{
+    width:120px;height:120px;margin:0 auto 14px;
+    border-radius:50%;
+    background:rgba(255,255,255,.15);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    border:4px solid rgba(255,255,255,.4);
+  }
+  .result-hero .score-num{
+    font-size:2.4rem;font-weight:800;
+    text-shadow:0 2px 8px rgba(0,0,0,.15);
+  }
+  .result-hero .score-num small{font-size:1.1rem;opacity:.85;font-weight:600}
+  .result-hero h2{font-size:1.3rem;font-weight:800;margin-bottom:6px;position:relative}
+  .result-hero p{font-size:.92rem;opacity:.95;position:relative}
+
+  .stat-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    gap:12px;margin-bottom:16px;
+  }
+  .stat-card{
+    background:#fff;border-radius:14px;
+    padding:16px;text-align:center;
+    box-shadow:var(--shadow-sm);
+    border:1.5px solid var(--border);
+  }
+  .stat-card .val{
+    font-size:1.6rem;font-weight:800;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    line-height:1.1;
+  }
+  .stat-card .lbl{font-size:.78rem;color:var(--text-muted);font-weight:600;margin-top:5px}
+
+  .review-item{
+    display:flex;gap:11px;padding:12px;
+    border-radius:11px;margin-bottom:9px;
+    background:#f8fafc;border:1.5px solid var(--border);
+    font-size:.88rem;
+  }
+  .review-item.ok{border-color:#a7f3d0;background:#f0fdf4}
+  .review-item.no{border-color:#fecaca;background:#fef2f2}
+  .review-item .ri-icon{
+    width:26px;height:26px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.85rem;font-weight:800;color:#fff;flex-shrink:0;
+  }
+  .review-item.ok .ri-icon{background:var(--success)}
+  .review-item.no .ri-icon{background:var(--danger)}
+  .review-item .ri-content{flex:1;line-height:1.55}
+  .review-item .ri-q{font-weight:600;color:#0f172a;margin-bottom:3px}
+  .review-item .ri-a{color:var(--text-muted);font-size:.83rem}
+  .review-item .ri-a b{color:var(--success);font-weight:700}
+  .review-item.no .ri-a b{color:var(--danger)}
+
+  .badge-grade{
+    display:inline-block;
+    padding:5px 14px;border-radius:20px;
+    font-size:.8rem;font-weight:800;
+    margin-top:8px;
+  }
+  .badge-grade.xs{background:#fee2e2;color:#991b1b}
+  .badge-grade.tb{background:#fef3c7;color:#92400e}
+  .badge-grade.kha{background:#dbeafe;color:#1e40af}
+  .badge-grade.gioi{background:#d1fae5;color:#065f46}
+
+  /* ============ MISC ============ */
+  .hidden{display:none!important}
+
+  .chip-list{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+  .chip-item{
+    background:linear-gradient(135deg,#eef2ff,#e0e7ff);
+    color:var(--primary-dark);
+    font-size:.82rem;font-weight:700;
+    padding:6px 13px;border-radius:20px;
+    border:1px solid #c7d2fe;
+  }
+
+  .divider{height:1px;background:var(--border);margin:16px 0}
+
+  .table-wrap{overflow-x:auto;margin:12px 0;border-radius:12px;border:1.5px solid var(--border)}
+  table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:340px}
+  th,td{padding:10px 12px;text-align:center;border-bottom:1px solid var(--border)}
+  th{background:linear-gradient(135deg,#eef2ff,#e0e7ff);font-weight:700;color:var(--primary-dark);font-size:.85rem}
+  tr:last-child td{border-bottom:none}
+  tr:nth-child(even) td{background:#f8fafc}
+
+  .hero-banner{
+    background:linear-gradient(135deg,#4f46e5,#6366f1 50%,#06b6d4);
+    border-radius:var(--radius);
+    padding:22px 20px;margin-bottom:18px;
+    color:#fff;position:relative;overflow:hidden;
+    box-shadow:var(--shadow-lg);
+  }
+  .hero-banner::before{
+    content:'';position:absolute;top:-40%;right:-20%;
+    width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.16),transparent 70%);
+  }
+  .hero-banner h2{font-size:1.35rem;font-weight:800;margin-bottom:6px;position:relative}
+  .hero-banner p{font-size:.9rem;opacity:.95;position:relative;line-height:1.6}
+
+  @media (max-width:480px){
+    body{font-size:14.5px}
+    .login-box{padding:30px 22px 24px}
+    .login-box h1{font-size:1.32rem}
+    .card{padding:16px 14px}
+    .card-title{font-size:1.02rem}
+    .formula{font-size:.98rem;padding:12px 14px}
+    .tab-btn{font-size:.65rem}
+    .tab-btn .emoji{font-size:1.22rem}
+    .teacher-mini b{font-size:.74rem}
+    .teacher-mini span{font-size:.66rem}
+  }
+
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:8px}
+  ::-webkit-scrollbar-thumb:hover{background:#94a3b8}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN SCREEN ================= -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">📐</div>
+    <h1>Ôn tập Hệ thức lượng<br>trong tam giác</h1>
+    <p class="subtitle">Toán 10 – Kết nối tri thức với cuộc sống</p>
+
+    <div class="teacher-card">
+      <div>👨‍🏫 Giáo viên: <span class="name">Nguyễn Hữu Trung</span></div>
+      <div>🏫 THPT Trần Phú</div>
+      <div class="phone">📞 0964 848 989</div>
+    </div>
+
+    <div class="field">
+      <label for="student-name">👤 Họ và tên học sinh</label>
+      <input type="text" id="student-name" placeholder="Ví dụ: Nguyễn Văn An" maxlength="40" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="student-class">🏫 Lớp</label>
+      <input type="text" id="student-class" placeholder="Ví dụ: 10A1" maxlength="15" autocomplete="off">
+    </div>
+
+    <button class="btn-primary" id="btn-login">
+      <span>🚀</span> Bắt đầu ôn tập
+    </button>
+    <p class="login-note">💡 Điểm số của bạn sẽ được lưu lại trên thiết bị này</p>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app">
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="teacher-mini">
+        <span class="icon">👨‍🏫</span>
+        <div style="min-width:0">
+          <b>GV: Nguyễn Hữu Trung</b>
+          <span>THPT Trần Phú • 0964 848 989</span>
+        </div>
+      </div>
+      <div class="user-badge">
+        <div class="avatar" id="avatar">A</div>
+        <span id="user-label">Học sinh</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ========== TAB: LÝ THUYẾT ========== -->
+    <section id="tab-theory" class="tab-content active">
+
+      <div class="hero-banner">
+        <h2>📖 Lý thuyết trọng tâm</h2>
+        <p>Hệ thức lượng trong tam giác – nền tảng giải tam giác và ứng dụng thực tế. Nhấn vào từng mục để xem chi tiết.</p>
+      </div>
+
+      <!-- Định lí côsin -->
+      <div class="accordion open" data-acc>
+        <div class="accordion-header">
+          <div class="left"><span class="chip">1</span> Định lí côsin</div>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-body">
+          <p style="margin-bottom:8px">Trong tam giác <span class="m">ABC</span> với các cạnh <span class="m">a = BC, b = CA, c = AB</span>:</p>
+          <div class="formula center">
+            <b>a²</b> = b² + c² − 2bc·cos<span class="m">A</span><br>
+            <b>b²</b> = c² + a² − 2ca·cos<span class="m">B</span><br>
+            <b>c²</b> = a² + b² − 2ab·cos<span class="m">C</span>
+          </div>
+          <div class="note-box">
+            <b>💡 Hệ quả:</b> Từ định lí côsin, ta tính được góc khi biết 3 cạnh:<br>
+            cos<span class="m">A</span> = <span class="frac"><span class="num">b² + c² − a²</span><span class="den">2bc</span></span>
+          </div>
+          <div class="note-box">
+            <b>📌 Nhận xét:</b> Nếu <span class="m">A</span> = 90° thì <span class="m">a² = b² + c²</span> (định lí Pythagore). Vậy định lí Pythagore là trường hợp đặc biệt của định lí côsin.
+          </div>
+
+          <div class="example-box">
+            <span class="ex-label">✦ Ví dụ 1</span>
+            <div class="ex-body">
+              Cho tam giác <span class="m">ABC</span> có <span class="m">A</span> = 120°, <span class="m">AB</span> = 5, <span class="m">AC</span> = 8. Tính độ dài cạnh <span class="m">BC</span>.
+              <div class="divider"></div>
+              <b>Giải:</b> Áp dụng định lí côsin:
+              <div class="formula">
+                BC² = AB² + AC² − 2·AB·AC·cos120°<br>
+                = 5² + 8² − 2·5·8·(−½) = 25 + 64 + 40 = 129<br>
+                ⇒ BC = √129 ≈ 11,36
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Định lí sin -->
+      <div class="accordion" data-acc>
+        <div class="accordion-header">
+          <div class="left"><span class="chip">2</span> Định lí sin</div>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-body">
+          <p style="margin-bottom:8px">Trong tam giác <span class="m">ABC</span> với <span class="m">R</span> là bán kính đường tròn ngoại tiếp:</p>
+          <div class="formula center">
+            <span class="frac"><span class="num">a</span><span class="den">sin A</span></span> =
+            <span class="frac"><span class="num">b</span><span class="den">sin B</span></span> =
+            <span class="frac"><span class="num">c</span><span class="den">sin C</span></span> = <b>2R</b>
+          </div>
+          <div class="note-box">
+            <b>💡 Hệ quả:</b> <span class="m">a</span> = 2R·sin<span class="m">A</span>, &nbsp; sin<span class="m">A</span> = <span class="frac"><span class="num">a</span><span class="den">2R</span></span>
+          </div>
+          <div class="example-box">
+            <span class="ex-label">✦ Ví dụ 2</span>
+            <div class="ex-body">
+              Cho tam giác <span class="m">ABC</span> có <span class="m">A</span> = 135°, <span class="m">C</span> = 15°, <span class="m">b</span> = 12. Tính <span class="m">a, c, R</span> và góc <span class="m">B</span>.
+              <div class="divider"></div>
+              <b>Giải:</b>
+              <div class="formula">
+                B = 180° − (A + C) = 180° − 150° = 30°<br>
+                <span class="frac"><span class="num">a</span><span class="den">sin135°</span></span> =
+                <span class="frac"><span class="num">12</span><span class="den">sin30°</span></span> =
+                <span class="frac"><span class="num">c</span><span class="den">sin15°</span></span> = 2R<br>
+                ⇒ a = 12√2; c = 24·sin15° ≈ 6,21; R = 12
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Công thức diện tích -->
+      <div class="accordion" data-acc>
+        <div class="accordion-header">
+          <div class="left"><span class="chip">3</span> Công thức tính diện tích tam giác</div>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-body">
+          <p style="margin-bottom:8px">Diện tích <span class="m">S</span> của tam giác <span class="m">ABC</span>:</p>
+          <div class="formula center">
+            <b>S</b> = ½·bc·sin<span class="m">A</span> = ½·ca·sin<span class="m">B</span> = ½·ab·sin<span class="m">C</span><br><br>
+            <b>S</b> = <span class="frac"><span class="num">abc</span><span class="den">4R</span></span> &nbsp;&nbsp;|&nbsp;&nbsp;
+            <b>S</b> = <span class="m">p</span>·<span class="m">r</span> &nbsp;&nbsp;|&nbsp;&nbsp;
+            <b>S</b> = √<span style="border-top:1.5px solid;padding:0 3px">p(p−a)(p−b)(p−c)</span>
+          </div>
+          <p style="font-size:.88rem;color:var(--text-muted);text-align:center">
+            (Công thức Heron) với <span class="m">p</span> = <span class="frac"><span class="num">a+b+c</span><span class="den">2</span></span> là nửa chu vi, <span class="m">r</span> là bán kính đường tròn nội tiếp.
+          </p>
+          <div class="example-box">
+            <span class="ex-label">✦ Ví dụ 3</span>
+            <div class="ex-body">
+              Tam giác <span class="m">ABC</span> có <span class="m">a</span> = 13, <span class="m">b</span> = 14, <span class="m">c</span> = 15. Tính diện tích <span class="m">S</span>.
+              <div class="divider"></div>
+              <b>Giải:</b> Nửa chu vi <span class="m">p</span> = (13+14+15)/2 = 21.
+              <div class="formula">
+                S = √(21·8·7·6) = √7056 = <b>84</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Giải tam giác -->
+      <div class="accordion" data-acc>
+        <div class="accordion-header">
+          <div class="left"><span class="chip">4</span> Giải tam giác &amp; ứng dụng</div>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-body">
+          <p><b>Giải tam giác</b> là tính các cạnh và góc còn lại khi biết một số yếu tố của tam giác.</p>
+          <div class="section-title" style="margin-top:12px"><span class="num">a</span> Các trường hợp áp dụng</div>
+          <ul style="padding-left:22px;font-size:.92rem;line-height:2">
+            <li>Biết 2 cạnh và góc xen giữa → <b>Định lí côsin</b></li>
+            <li>Biết 3 cạnh → <b>Định lí côsin</b> (tính góc) + <b>Heron</b> (tính S)</li>
+            <li>Biết 1 cạnh và 2 góc kề → <b>Định lí sin</b></li>
+          </ul>
+          <div class="note-box">
+            <b>🌊 Ứng dụng thực tế:</b> Đo khoảng cách từ bờ đến Tháp Rùa (Hồ Hoàn Kiếm), đo khoảng cách giữa hai đỉnh núi, xác định hướng đi của tàu thuyền trên biển...
+          </div>
+          <div class="example-box">
+            <span class="ex-label">✦ Ví dụ 4 – Ứng dụng</span>
+            <div class="ex-body">
+              Trên bờ hồ, đặt cọc tiêu tại <span class="m">A</span> và <span class="m">B</span> cách nhau 100 m. Từ <span class="m">A</span> đo được góc <span class="m">BAC</span> = 45°, từ <span class="m">B</span> đo được góc <span class="m">ABC</span> = 70°. Tính khoảng cách từ <span class="m">A</span> đến Tháp Rùa <span class="m">C</span>.
+              <div class="divider"></div>
+              <b>Giải:</b> <span class="m">C</span> = 180° − 45° − 70° = 65°.
+              <div class="formula">
+                <span class="frac"><span class="num">AC</span><span class="den">sin70°</span></span> =
+                <span class="frac"><span class="num">AB</span><span class="den">sin65°</span></span>
+                ⇒ AC = <span class="frac"><span class="num">100·sin70°</span><span class="den">sin65°</span></span> ≈ 103,6 m
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bảng giá trị lượng giác -->
+      <div class="card">
+        <div class="card-title"><span class="badge">📋</span> Bảng giá trị lượng giác đặc biệt</div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>α</th><th>0°</th><th>30°</th><th>45°</th><th>60°</th><th>90°</th><th>180°</th></tr>
+            <tr><td>sin</td><td>0</td><td>½</td><td>√2/2</td><td>√3/2</td><td>1</td><td>0</td></tr>
+            <tr><td>cos</td><td>1</td><td>√3/2</td><td>√2/2</td><td>½</td><td>0</td><td>−1</td></tr>
+            <tr><td>tan</td><td>0</td><td>√3/3</td><td>1</td><td>√3</td><td>||</td><td>0</td></tr>
+            <tr><td>cot</td><td>||</td><td>√3</td><td>1</td><td>√3/3</td><td>0</td><td>||</td></tr>
+          </table>
+        </div>
+        <div class="note-box">
+          <b>📌 Ghi nhớ:</b> Hai góc bù nhau có <span class="m">sin</span> bằng nhau, <span class="m">cos</span>, <span class="m">tan</span>, <span class="m">cot</span> đối nhau.
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TAB: LUYỆN TẬP ========== -->
+    <section id="tab-practice" class="tab-content">
+      <div class="hero-banner">
+        <h2>✏️ Luyện tập từng câu</h2>
+        <p>Mỗi câu có phản hồi ngay lập tức. Hãy đọc kỹ đề và chọn đáp án đúng nhất!</p>
+      </div>
+      <div id="practice-container"></div>
+    </section>
+
+    <!-- ========== TAB: TỔNG HỢP ========== -->
+    <section id="tab-comprehensive" class="tab-content">
+      <div class="hero-banner">
+        <h2>🎯 Bài kiểm tra tổng hợp</h2>
+        <p>10 câu hỏi – hoàn thành để nhận điểm số và nhận xét chi tiết.</p>
+      </div>
+      <div id="comprehensive-container"></div>
+    </section>
+
+    <!-- ========== TAB: KẾT QUẢ ========== -->
+    <section id="tab-results" class="tab-content">
+      <div class="hero-banner">
+        <h2>📊 Kết quả học tập</h2>
+        <p>Theo dõi tiến bộ của bạn qua các lần luyện tập.</p>
+      </div>
+      <div id="results-container"></div>
+    </section>
+
+  </main>
+
+  <!-- ========== TABS NAV ========== -->
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="theory"><span class="emoji">📖</span>Lý thuyết</button>
+    <button class="tab-btn" data-tab="practice"><span class="emoji">✏️</span>Luyện tập</button>
+    <button class="tab-btn" data-tab="comprehensive"><span class="emoji">🎯</span>Tổng hợp</button>
+    <button class="tab-btn" data-tab="results"><span class="emoji">📊</span>Kết quả</button>
+  </nav>
+
+</div>
+
+<script>
+/* ============================================================
+   DỮ LIỆU CÂU HỎI
+   ============================================================ */
+
+// ---- LUYỆN TẬP TỪNG CÂU (có phản hồi ngay) ----
+const practiceQuestions = [
+  {
+    q: 'Cho tam giác <span class="m">ABC</span> có <span class="m">a</span> = 6, <span class="m">b</span> = 5, <span class="m">c</span> = 8. Tính <span class="m">cos A</span>.',
+    options: ['53/80', '43/80', '63/80', '33/80'],
+    correct: 0,
+    explain: 'cos A = (b² + c² − a²)/(2bc) = (25 + 64 − 36)/(2·5·8) = 53/80.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">A</span> = 60°, <span class="m">b</span> = 8, <span class="m">c</span> = 5. Tính độ dài cạnh <span class="m">a</span>.',
+    options: ['7', '8', '6', '5'],
+    correct: 0,
+    explain: 'a² = b² + c² − 2bc·cos A = 64 + 25 − 2·8·5·cos60° = 89 − 40 = 49 ⇒ a = 7.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">a</span> = 10, <span class="m">A</span> = 45°. Tính bán kính <span class="m">R</span> của đường tròn ngoại tiếp.',
+    options: ['5√2', '10√2', '5', '10'],
+    correct: 0,
+    explain: '2R = a/sin A = 10/(√2/2) = 10√2 ⇒ R = 5√2.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">b</span> = 8, <span class="m">c</span> = 5, <span class="m">A</span> = 60°. Tính diện tích <span class="m">S</span>.',
+    options: ['10√3', '20√3', '20', '10'],
+    correct: 0,
+    explain: 'S = ½·b·c·sin A = ½·8·5·sin60° = 20·(√3/2) = 10√3.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">a</span> = 13, <span class="m">b</span> = 14, <span class="m">c</span> = 15. Tính diện tích <span class="m">S</span> (dùng công thức Heron).',
+    options: ['84', '80', '90', '96'],
+    correct: 0,
+    explain: 'p = 21; S = √(21·8·7·6) = √7056 = 84.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">a</span> = 7, <span class="m">b</span> = 8, <span class="m">c</span> = 5. Tính số đo góc <span class="m">A</span> (làm tròn đến độ).',
+    options: ['60°', '45°', '30°', '90°'],
+    correct: 0,
+    explain: 'cos A = (b² + c² − a²)/(2bc) = (64 + 25 − 49)/(2·8·5) = 40/80 = 0,5 ⇒ A = 60°.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">A</span> = 30°, <span class="m">B</span> = 45°, <span class="m">a</span> = 4. Tính độ dài cạnh <span class="m">b</span>.',
+    options: ['4√2', '2√2', '4', '8'],
+    correct: 0,
+    explain: 'b = a·sin B/sin A = 4·(√2/2)/(1/2) = 4√2.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">a</span> = 5, <span class="m">b</span> = 6, <span class="m">c</span> = 7. Tính bán kính <span class="m">r</span> của đường tròn nội tiếp.',
+    options: ['2√6/3', '√6/3', '2√6', '√6'],
+    correct: 0,
+    explain: 'p = 9; S = √(9·4·3·2) = 6√6; r = S/p = 6√6/9 = 2√6/3.'
+  },
+  {
+    q: 'Tam giác đều cạnh <span class="m">a</span>. Tính bán kính <span class="m">R</span> của đường tròn ngoại tiếp.',
+    options: ['a√3/3', 'a/2', 'a√3/2', 'a'],
+    correct: 0,
+    explain: 'Tam giác đều có R = a/√3 = a√3/3.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> vuông tại <span class="m">A</span>, <span class="m">AB</span> = 3, <span class="m">AC</span> = 4. Tính diện tích <span class="m">S</span>.',
+    options: ['6', '12', '5', '10'],
+    correct: 0,
+    explain: 'S = ½·AB·AC = ½·3·4 = 6.'
+  }
+];
+
+// ---- BÀI KIỂM TRA TỔNG HỢP ----
+const comprehensiveQuestions = [
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">b</span> = 7, <span class="m">c</span> = 5, <span class="m">A</span> = 60°. Độ dài cạnh <span class="m">a</span> là:',
+    options: ['√39', '√29', '√19', '√49'],
+    correct: 0,
+    explain: 'a² = 49 + 25 − 2·7·5·cos60° = 74 − 35 = 39 ⇒ a = √39.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">a</span> = 8, <span class="m">b</span> = 6, <span class="m">c</span> = 10. Khẳng định nào sau đây đúng?',
+    options: [
+      'Tam giác vuông tại C',
+      'Tam giác vuông tại A',
+      'Tam giác vuông tại B',
+      'Tam giác đều'
+    ],
+    correct: 0,
+    explain: 'a² + b² = 64 + 36 = 100 = c² ⇒ tam giác vuông tại C (cạnh huyền c).'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">A</span> = 60°, <span class="m">B</span> = 75°, <span class="m">a</span> = 6. Độ dài cạnh <span class="m">b</span> gần bằng:',
+    options: ['6,69', '5,20', '7,50', '4,90'],
+    correct: 0,
+    explain: 'b = a·sin B/sin A = 6·sin75°/sin60° ≈ 6·0,966/0,866 ≈ 6,69.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">a</span> = 12, <span class="m">b</span> = 15, <span class="m">c</span> = 9. Diện tích <span class="m">S</span> bằng:',
+    options: ['54', '45', '60', '48'],
+    correct: 0,
+    explain: 'p = 18; S = √(18·6·3·9) = √2916 = 54.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">a</span> = 5, <span class="m">A</span> = 30°. Bán kính <span class="m">R</span> của đường tròn ngoại tiếp là:',
+    options: ['5', '10', '5√2', '2,5'],
+    correct: 0,
+    explain: '2R = a/sin A = 5/(1/2) = 10 ⇒ R = 5.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">b</span> = 6, <span class="m">c</span> = 9, <span class="m">A</span> = 30°. Diện tích <span class="m">S</span> bằng:',
+    options: ['13,5', '27', '13,5√3', '27√3'],
+    correct: 0,
+    explain: 'S = ½·6·9·sin30° = 27·½ = 13,5.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">a</span> = 4, <span class="m">b</span> = 5, <span class="m">c</span> = 6. Giá trị <span class="m">cos A</span> bằng:',
+    options: ['3/4', '1/2', '5/8', '7/8'],
+    correct: 0,
+    explain: 'cos A = (25 + 36 − 16)/(2·5·6) = 45/60 = 3/4.'
+  },
+  {
+    q: 'Một tam giác có ba cạnh 3, 4, 5. Bán kính đường tròn nội tiếp <span class="m">r</span> bằng:',
+    options: ['1', '2', '1,5', '2,5'],
+    correct: 0,
+    explain: 'p = 6; S = ½·3·4 = 6; r = S/p = 6/6 = 1.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">a</span> = 10, <span class="m">b</span> = 8, <span class="m">C</span> = 60°. Độ dài cạnh <span class="m">c</span> gần bằng:',
+    options: ['9,17', '8,50', '10,20', '7,80'],
+    correct: 0,
+    explain: 'c² = 100 + 64 − 2·10·8·cos60° = 164 − 80 = 84 ⇒ c = √84 ≈ 9,17.'
+  },
+  {
+    q: 'Tam giác <span class="m">ABC</span> có <span class="m">A</span> = 45°, <span class="m">B</span> = 60°, <span class="m">c</span> = 8. Độ dài cạnh <span class="m">a</span> gần bằng:',
+    options: ['5,86', '6,50', '7,20', '4,80'],
+    correct: 0,
+    explain: 'C = 75°; a = c·sin A/sin C = 8·sin45°/sin75° ≈ 8·0,707/0,966 ≈ 5,86.'
+  }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  student: { name: '', cls: '' },
+  practice: { current: 0, answered: false, correct: 0, selected: null },
+  comprehensive: { started: false, current: 0, answers: [], finished: false, score: 0 }
+};
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const $ = sel => document.querySelector(sel);
+const $$ = sel => document.querySelectorAll(sel);
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function saveToStorage(){
+  try{
+    localStorage.setItem('htl_student', JSON.stringify(state.student));
+    const history = JSON.parse(localStorage.getItem('htl_history') || '[]');
+    return history;
+  }catch(e){ return []; }
+}
+
+function addHistory(entry){
+  try{
+    const history = JSON.parse(localStorage.getItem('htl_history') || '[]');
+    history.unshift(entry);
+    localStorage.setItem('htl_history', JSON.stringify(history.slice(0,20)));
+  }catch(e){}
+}
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+function initLogin(){
+  const saved = localStorage.getItem('htl_student');
+  if(saved){
+    try{
+      const s = JSON.parse(saved);
+      if(s.name){ $('#student-name').value = s.name; }
+      if(s.cls){ $('#student-class').value = s.cls; }
+    }catch(e){}
+  }
+
+  $('#btn-login').addEventListener('click', doLogin);
+  $('#student-name').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+  $('#student-class').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+}
+
+function doLogin(){
+  const name = $('#student-name').value.trim();
+  const cls = $('#student-class').value.trim();
+  if(!name){
+    alert('Vui lòng nhập họ và tên học sinh!');
+    $('#student-name').focus();
+    return;
+  }
+  state.student = { name, cls };
+  localStorage.setItem('htl_student', JSON.stringify(state.student));
+
+  $('#user-label').textContent = name.split(' ').pop();
+  $('#avatar').textContent = name.trim().charAt(0).toUpperCase();
+
+  $('#login-screen').style.display = 'none';
+  $('#app').classList.add('active');
+
+  initApp();
+}
+
+/* ============================================================
+   INIT APP
+   ============================================================ */
+function initApp(){
+  initTabs();
+  initAccordions();
+  renderPractice();
+  renderResults();
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+function initTabs(){
+  $$('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      $$('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+      $$('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + tab));
+      window.scrollTo({top:0, behavior:'smooth'});
+      if(tab === 'results') renderResults();
+    });
+  });
+}
+
+/* ============================================================
+   ACCORDIONS
+   ============================================================ */
+function initAccordions(){
+  $$('[data-acc]').forEach(acc => {
+    const header = acc.querySelector('.accordion-header');
+    header.addEventListener('click', () => acc.classList.toggle('open'));
+  });
+}
+
+/* ============================================================
+   LUYỆN TẬP TỪNG CÂU
+   ============================================================ */
+function renderPractice(){
+  const container = $('#practice-container');
+  const q = practiceQuestions[state.practice.current];
+  const total = practiceQuestions.length;
+  const cur = state.practice.current;
+  const answered = state.practice.answered;
+  const selected = state.practice.selected;
+
+  const letters = ['A','B','C','D'];
+
+  let html = `
+    <div class="card">
+      <div class="quiz-header">
+        <div class="progress-info">Câu ${cur+1} / ${total}</div>
+        <div class="progress-info" style="color:var(--success)">✓ Đúng: ${state.practice.correct}</div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${((cur)/total)*100}%"></div></div>
+    </div>
+
+    <div class="card">
+      <div class="question-box">
+        <span class="q-tag">Câu ${cur+1}</span>
+        <div class="q-text">${q.q}</div>
+        <div class="options">
+  `;
+
+  q.options.forEach((opt, i) => {
+    let cls = 'option';
+    let mark = '';
+    if(answered){
+      cls += ' disabled';
+      if(i === q.correct){ cls += ' correct'; mark = '✓'; }
+      else if(i === selected){ cls += ' wrong'; mark = '✗'; }
+    }
+    html += `
+      <button class="${cls}" data-opt="${i}">
+        <span class="letter">${letters[i]}</span>
+        <span>${opt}</span>
+        ${mark ? `<span class="mark" style="color:${i===q.correct?'var(--success)':'var(--danger)'}">${mark}</span>` : ''}
+      </button>
+    `;
+  });
+
+  html += `</div>`;
+
+  if(answered){
+    const ok = selected === q.correct;
+    html += `
+      <div class="feedback ${ok?'ok':'no'} show">
+        ${ok ? '🎉 <b>Chính xác!</b>' : '❌ <b>Chưa đúng.</b>'}
+        <div style="margin-top:6px;font-weight:500">${q.explain}</div>
+      </div>
+    `;
+  }
+
+  html += `
+        <div class="btn-row">
+          ${answered
+            ? `<button class="btn btn-next" id="btn-next-practice">
+                 ${cur < total-1 ? '➡️ Câu tiếp theo' : '✅ Hoàn thành'}
+               </button>`
+            : `<button class="btn btn-ghost" id="btn-skip" style="flex:0 0 auto">Bỏ qua</button>`
+          }
+          <button class="btn btn-ghost" id="btn-restart-practice" style="flex:0 0 auto">🔄 Làm lại</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  container.innerHTML = html;
+
+  // Events
+  if(!answered){
+    container.querySelectorAll('.option').forEach(btn => {
+      btn.addEventListener('click', () => selectPractice(parseInt(btn.dataset.opt)));
+    });
+  }
+
+  const nextBtn = $('#btn-next-practice');
+  if(nextBtn){
+    nextBtn.addEventListener('click', () => {
+      if(state.practice.current < total - 1){
+        state.practice.current++;
+        state.practice.answered = false;
+        state.practice.selected = null;
+        renderPractice();
+        window.scrollTo({top:0, behavior:'smooth'});
+      } else {
+        // Hoàn thành
+        addHistory({
+          type: 'practice',
+          score: state.practice.correct,
+          total,
+          name: state.student.name,
+          date: new Date().toISOString()
+        });
+        alert(`🎉 Hoàn thành luyện tập!\n\nBạn trả lời đúng ${state.practice.correct}/${total} câu.`);
+        state.practice.current = 0;
+        state.practice.answered = false;
+        state.practice.selected = null;
+        state.practice.correct = 0;
+        renderPractice();
+        renderResults();
+      }
+    });
+  }
+
+  const skipBtn = $('#btn-skip');
+  if(skipBtn){
+    skipBtn.addEventListener('click', () => {
+      state.practice.answered = true;
+      state.practice.selected = -1;
+      renderPractice();
+    });
+  }
+
+  const restartBtn = $('#btn-restart-practice');
+  if(restartBtn){
+    restartBtn.addEventListener('click', () => {
+      state.practice = { current: 0, answered: false, correct: 0, selected: null };
+      renderPractice();
+    });
+  }
+}
+
+function selectPractice(idx){
+  if(state.practice.answered) return;
+  const q = practiceQuestions[state.practice.current];
+  state.practice.selected = idx;
+  state.practice.answered = true;
+  if(idx === q.correct) state.practice.correct++;
+  renderPractice();
+}
+
+/* ============================================================
+   BÀI KIỂM TRA TỔNG HỢP
+   ============================================================ */
+function renderComprehensive(){
+  const c = $('#comprehensive-container');
+
+  if(state.comprehensive.finished){
+    renderComprehensiveResult();
+    return;
+  }
+
+  if(!state.comprehensive.started){
+    c.innerHTML = `
+      <div class="card" style="text-align:center">
+        <div style="font-size:3rem;margin-bottom:10px">🎯</div>
+        <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:8px">Sẵn sàng làm bài kiểm tra?</h3>
+        <p style="color:var(--text-muted);font-size:.92rem;margin-bottom:18px;line-height:1.7">
+          Bài kiểm tra gồm <b>${comprehensiveQuestions.length} câu hỏi</b>.<br>
+          Sau khi hoàn thành, bạn sẽ nhận được điểm số và nhận xét chi tiết.
+        </p>
+        <button class="btn btn-next" id="btn-start-comp" style="max-width:280px;margin:0 auto">
+          🚀 Bắt đầu làm bài
+        </button>
+      </div>
+    `;
+    $('#btn-start-comp').addEventListener('click', () => {
+      state.comprehensive = { started:true, current:0, answers:new Array(comprehensiveQuestions.length).fill(null), finished:false, score:0 };
+      renderComprehensive();
+    });
+    return;
+  }
+
+  const cur = state.comprehensive.current;
+  const total = comprehensiveQuestions.length;
+  const q = comprehensiveQuestions[cur];
+  const letters = ['A','B','C','D'];
+
+  let html = `
+    <div class="card">
+      <div class="quiz-header">
+        <div class="progress-info">Câu ${cur+1} / ${total}</div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${((cur)/total)*100}%"></div></div>
+    </div>
+
+    <div class="card">
+      <div class="question-box">
+        <span class="q-tag">Câu ${cur+1}</span>
+        <div class="q-text">${q.q}</div>
+        <div class="options">
+  `;
+
+  q.options.forEach((opt, i) => {
+    html += `
+      <button class="option" data-opt="${i}">
+        <span class="letter">${letters[i]}</span>
+        <span>${opt}</span>
+      </button>
+    `;
+  });
+
+  html += `
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="btn-prev-comp" ${cur===0?'disabled':''}>⬅️ Câu trước</button>
+          <button class="btn btn-next" id="btn-next-comp" disabled>
+            ${cur < total-1 ? 'Câu tiếp theo ➡️' : '✅ Nộp bài'}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  c.innerHTML = html;
+
+  // Hiển thị đáp án đã chọn nếu quay lại
+  const prevAns = state.comprehensive.answers[cur];
+  if(prevAns !== null && prevAns !== undefined){
+    c.querySelectorAll('.option').forEach((btn, i) => {
+      if(i === prevAns){
+        btn.style.borderColor = 'var(--primary)';
+        btn.style.background = '#f5f3ff';
+      }
+    });
+    $('#btn-next-comp').disabled = false;
+  }
+
+  c.querySelectorAll('.option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.opt);
+      state.comprehensive.answers[cur] = idx;
+      c.querySelectorAll('.option').forEach((b, i) => {
+        b.style.borderColor = i === idx ? 'var(--primary)' : 'var(--border)';
+        b.style.background = i === idx ? '#f5f3ff' : '#fff';
+      });
+      $('#btn-next-comp').disabled = false;
+    });
+  });
+
+  $('#btn-prev-comp').addEventListener('click', () => {
+    if(state.comprehensive.current > 0){
+      state.comprehensive.current--;
+      renderComprehensive();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  });
+
+  $('#btn-next-comp').addEventListener('click', () => {
+    if(state.comprehensive.current < total - 1){
+      state.comprehensive.current++;
+      renderComprehensive();
+      window.scrollTo({top:0, behavior:'smooth'});
+    } else {
+      finishComprehensive();
+    }
+  });
+}
+
+function finishComprehensive(){
+  const answers = state.comprehensive.answers;
+  let score = 0;
+  answers.forEach((a, i) => { if(a === comprehensiveQuestions[i].correct) score++; });
+  state.comprehensive.score = score;
+  state.comprehensive.finished = true;
+
+  addHistory({
+    type: 'comprehensive',
+    score,
+    total: comprehensiveQuestions.length,
+    name: state.student.name,
+    date: new Date().toISOString()
+  });
+
+  renderComprehensive();
+  renderResults();
+}
+
+function renderComprehensiveResult(){
+  const c = $('#comprehensive-container');
+  const score = state.comprehensive.score;
+  const total = comprehensiveQuestions.length;
+  const percent = Math.round((score/total)*100);
+
+  let grade = 'Yếu', gradeCls = 'xs';
+  if(percent >= 85){ grade = 'Xuất sắc'; gradeCls = 'gioi'; }
+  else if(percent >= 70){ grade = 'Khá'; gradeCls = 'kha'; }
+  else if(percent >= 50){ grade = 'Trung bình'; gradeCls = 'tb'; }
+
+  let html = `
+    <div class="result-hero">
+      <div class="score-ring">
+        <div class="score-num">${score}<small>/${total}</small></div>
+      </div>
+      <h2>Hoàn thành bài kiểm tra!</h2>
+      <p>Bạn đạt ${percent}% số điểm</p>
+      <span class="badge-grade ${gradeCls}" style="position:relative">${grade}</span>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="val">${score}</div>
+        <div class="lbl">Câu đúng</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">${total-score}</div>
+        <div class="lbl">Câu sai</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">${percent}%</div>
+        <div class="lbl">Tỉ lệ đúng</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge">📝</span> Xem lại chi tiết</div>
+  `;
+
+  comprehensiveQuestions.forEach((q, i) => {
+    const userAns = state.comprehensive.answers[i];
+    const ok = userAns === q.correct;
+    const letters = ['A','B','C','D'];
+    html += `
+      <div class="review-item ${ok?'ok':'no'}">
+        <div class="ri-icon">${ok?'✓':'✗'}</div>
+        <div class="ri-content">
+          <div class="ri-q">Câu ${i+1}: ${q.q}</div>
+          <div class="ri-a">
+            Bạn chọn: <b>${userAns !== null && userAns !== undefined ? letters[userAns] + '. ' + q.options[userAns] : 'Chưa trả lời'}</b>
+            ${!ok ? `<br>Đáp án đúng: <b style="color:var(--success)">${letters[q.correct]}. ${q.options[q.correct]}</b>` : ''}
+            <div style="margin-top:4px;font-style:italic;color:#475569">${q.explain}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `
+      <div class="btn-row" style="margin-top:16px">
+        <button class="btn btn-next" id="btn-retry-comp">🔄 Làm lại</button>
+        <button class="btn btn-ghost" id="btn-back-comp">📖 Ôn lý thuyết</button>
+      </div>
+    </div>
+  `;
+
+  c.innerHTML = html;
+
+  $('#btn-retry-comp').addEventListener('click', () => {
+    state.comprehensive = { started:false, current:0, answers:[], finished:false, score:0 };
+    renderComprehensive();
+  });
+  $('#btn-back-comp').addEventListener('click', () => {
+    $$('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === 'theory'));
+    $$('.tab-content').forEach(t => t.classList.toggle('active', t.id === 'tab-theory'));
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+}
+
+/* ============================================================
+   RESULTS
+   ============================================================ */
+function renderResults(){
+  const c = $('#results-container');
+  let history = [];
+  try{
+    history = JSON.parse(localStorage.getItem('htl_history') || '[]');
+  }catch(e){}
+
+  if(history.length === 0){
+    c.innerHTML = `
+      <div class="card" style="text-align:center;padding:36px 20px">
+        <div style="font-size:3.4rem;margin-bottom:12px">📊</div>
+        <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:8px">Chưa có kết quả</h3>
+        <p style="color:var(--text-muted);font-size:.92rem;line-height:1.7">
+          Hãy hoàn thành phần <b>Luyện tập</b> hoặc <b>Bài kiểm tra tổng hợp</b> để xem thống kê tại đây.
+        </p>
+      </div>
+    `;
+    return;
+  }
+
+  const practiceRuns = history.filter(h => h.type === 'practice');
+  const compRuns = history.filter(h => h.type === 'comprehensive');
+
+  const avgPractice = practiceRuns.length
+    ? Math.round(practiceRuns.reduce((s,h) => s + (h.score/h.total)*100, 0) / practiceRuns.length)
+    : null;
+
+  const avgComp = compRuns.length
+    ? Math.round(compRuns.reduce((s,h) => s + (h.score/h.total)*100, 0) / compRuns.length)
+    : null;
+
+  let html = `
+    <div class="card">
+      <div class="card-title"><span class="badge">👤</span> Học sinh</div>
+      <p style="font-size:1.05rem;font-weight:700">${state.student.name} ${state.student.cls ? '– Lớp ' + state.student.cls : ''}</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="val">${practiceRuns.length}</div>
+        <div class="lbl">Lần luyện tập</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">${compRuns.length}</div>
+        <div class="lbl">Lần kiểm tra</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">${avgPractice !== null ? avgPractice + '%' : '—'}</div>
+        <div class="lbl">TB luyện tập</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">${avgComp !== null ? avgComp + '%' : '—'}</div>
+        <div class="lbl">TB kiểm tra</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="badge">🕐</span> Lịch sử gần đây</div>
+  `;
+
+  history.slice(0,10).forEach(h => {
+    const percent = Math.round((h.score/h.total)*100);
+    let cls = 'tb';
+    if(percent >= 85) cls = 'gioi';
+    else if(percent >= 70) cls = 'kha';
+    else if(percent < 50) cls = 'xs';
+    const date = new Date(h.date);
+    const dateStr = date.toLocaleDateString('vi-VN') + ' ' + date.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
+
+    html += `
+      <div class="review-item ${percent >= 50 ? 'ok' : 'no'}" style="align-items:center">
+        <div class="ri-icon">${h.type === 'practice' ? '✏️' : '🎯'}</div>
+        <div class="ri-content">
+          <div class="ri-q">${h.type === 'practice' ? 'Luyện tập' : 'Kiểm tra tổng hợp'}</div>
+          <div class="ri-a">
+            Điểm: <b>${h.score}/${h.total}</b> (${percent}%) • ${dateStr}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `
+      <div class="btn-row" style="margin-top:16px">
+        <button class="btn btn-ghost" id="btn-clear-history">🗑️ Xóa lịch sử</button>
+      </div>
+    </div>
+  `;
+
+  c.innerHTML = html;
+
+  $('#btn-clear-history').addEventListener('click', () => {
+    if(confirm('Bạn có chắc muốn xóa toàn bộ lịch sử điểm?')){
+      localStorage.removeItem('htl_history');
+      renderResults();
+    }
+  });
+}
+
+/* ============================================================
+   BOOTSTRAP
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  initLogin();
+
+  // Nếu đã có student trong localStorage thì auto login
+  const saved = localStorage.getItem('htl_student');
+  if(saved){
+    try{
+      const s = JSON.parse(saved);
+      if(s.name && s.name.trim()){
+        state.student = s;
+        $('#user-label').textContent = s.name.split(' ').pop();
+        $('#avatar').textContent = s.name.trim().charAt(0).toUpperCase();
+        $('#login-screen').style.display = 'none';
+        $('#app').classList.add('active');
+        initApp();
+      }
+    }catch(e){}
+  }
+});
+</script>
+</body>
+</html>
